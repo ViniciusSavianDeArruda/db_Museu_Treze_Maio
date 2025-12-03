@@ -16,7 +16,7 @@ Esse projeto foi realizado com o intuito de gerenciar o acervo bibliográfico e 
 ## Funcionalidades
 O diagrama de Casos de Uso abaixo ilustra as principais interações que os usuários (Administrador e Público) podem ter com o sistema.
 
-*Casos De Uso:![Casos de Uso](./FotosDiagramas/Modelo%20caso%20de%20usos.png)*
+*Casos De Uso:![Casos de Uso](./Imagens-Diagramas/Modelo%20caso%20de%20usos.png)*
 
 ---
 
@@ -26,18 +26,19 @@ A modelagem foi dividida em duas etapas: conceitual e lógica, garantindo que os
 ### Modelo Conceitual (DER)
 Representa as entidades, seus atributos e os relacionamentos entre elas.
 
-*Modelo Conceitual: ![Modelo Conceitual](./FotosDiagramas/Modelo_Conceitual.png)*
+*Modelo Conceitual: ![Modelo Conceitual](./Imagens-Diagramas/Modelo_Conceitual.png)*
 
 ### Modelo Lógico
 Mapeia o modelo conceitual para uma estrutura de tabelas, com chaves primárias e estrangeiras definidas, assim como o tipo de dado de cada atributo.
 
-*Modelo Lógico: ![Modelo Lógico](./FotosDiagramas/Modelo_Logico.png)*
+*Modelo Lógico: ![Modelo Lógico](./Imagens-Diagramas/Modelo_Logico.png)*
 
 ---
 
 
 ## Interface do Sistema
 
+---
 
 ## Ferramentas Utilizadas
 *   **SGBD:** Microsoft SQL Server
@@ -67,7 +68,7 @@ Mapeia o modelo conceitual para uma estrutura de tabelas, com chaves primárias 
 5.  Execute o script completo para popular o banco de dados com dados de exemplo.
 6.  (Opcional) Para verificar se tudo está funcionando, abra e execute o arquivo `Consultas_db_Museu_Treze_Maio.sql`.
 
-7. PARTE DO JAVA
+7. PARTE DO JAVA...
 ---
 
 ## Estrutura do Projeto
@@ -77,12 +78,3 @@ Mapeia o modelo conceitual para uma estrutura de tabelas, com chaves primárias 
 *   `Dicionario-Dados/Dicionario de Dados.md`: Documentação detalhada de cada tabela e atributo do banco.
 *   `Modelos-Diagramas`: Arquivos fontes dos modelos e do caso de uso.
 *   `Imagens-Diagramas`: Imagens dos diagramas.
-
----
-
-## Interface do Sistema (Protótipo)
-Abaixo estão alguns exemplos de telas do protótipo da interface do sistema, desenvolvida para validar os requisitos com os stakeholders.
-
-**[INSERIR PRINTS DA INTERFACE AQUI]**
-*Exemplo: ![Tela de Login](caminho/para/tela_login.png)*
-*Exemplo: ![Tela de Cadastro](caminho/para/tela_cadastro.png)*
