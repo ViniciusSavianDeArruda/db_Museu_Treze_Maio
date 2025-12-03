@@ -72,10 +72,10 @@ CREATE TABLE LOG_OPERACAO (
     operacao VARCHAR(100) NOT NULL,
     data_operacao DATETIME NOT NULL,
     id_usuario INT NOT NULL,
-    id_item_acervo INT NOT NULL,
+    id_item_acervo INT,
     CONSTRAINT PK_Log PRIMARY KEY (id_log),
     CONSTRAINT FK_Log_Usuario FOREIGN KEY (id_usuario) REFERENCES USUARIO(id_usuario),
-    CONSTRAINT FK_Log_ItemAcervo FOREIGN KEY (id_item_acervo) REFERENCES ITEM_ACERVO(id_item_acervo)
+    CONSTRAINT FK_Log_ItemAcervo FOREIGN KEY (id_item_acervo) REFERENCES ITEM_ACERVO(id_item_acervo) ON DELETE SET NULL
 );
 GO
 
@@ -87,7 +87,7 @@ CREATE TABLE PUBLICACAO (
     ano INT,
     id_item_acervo INT NOT NULL,
     CONSTRAINT PK_Publicacao PRIMARY KEY (id_publicacao),
-    CONSTRAINT FK_Publicacao_ItemAcervo FOREIGN KEY (id_item_acervo) REFERENCES ITEM_ACERVO(id_item_acervo)
+    CONSTRAINT FK_Publicacao_ItemAcervo FOREIGN KEY (id_item_acervo) REFERENCES ITEM_ACERVO(id_item_acervo) ON DELETE CASCADE
 );
 GO
 
@@ -104,7 +104,7 @@ CREATE TABLE LIVRO (
     id_serie INT,
     CONSTRAINT PK_Livro PRIMARY KEY (id_item_acervo),
     CONSTRAINT UQ_Livro_ISBN UNIQUE (isbn),
-    CONSTRAINT FK_Livro_ItemAcervo FOREIGN KEY (id_item_acervo) REFERENCES ITEM_ACERVO(id_item_acervo),
+    CONSTRAINT FK_Livro_ItemAcervo FOREIGN KEY (id_item_acervo) REFERENCES ITEM_ACERVO(id_item_acervo) ON DELETE CASCADE,
     CONSTRAINT FK_Livro_Serie FOREIGN KEY (id_serie) REFERENCES SERIE(id_serie)
 );
 GO
@@ -115,7 +115,7 @@ CREATE TABLE LIVRO_AUTOR (
     id_livro INT,
     CONSTRAINT PK_LivroAutor PRIMARY KEY (id_autor, id_livro),
     CONSTRAINT FK_LivroAutor_Autor FOREIGN KEY (id_autor) REFERENCES AUTOR(id_autor),
-    CONSTRAINT FK_LivroAutor_Livro FOREIGN KEY (id_livro) REFERENCES LIVRO(id_item_acervo)
+    CONSTRAINT FK_LivroAutor_Livro FOREIGN KEY (id_livro) REFERENCES LIVRO(id_item_acervo) ON DELETE CASCADE
 );
 GO
 
@@ -125,7 +125,7 @@ CREATE TABLE LIVRO_ASSUNTO (
     id_livro INT,
     CONSTRAINT PK_LivroAssunto PRIMARY KEY (id_assunto, id_livro),
     CONSTRAINT FK_LivroAssunto_Assunto FOREIGN KEY (id_assunto) REFERENCES ASSUNTO(id_assunto),
-    CONSTRAINT FK_LivroAssunto_Livro FOREIGN KEY (id_livro) REFERENCES LIVRO(id_item_acervo)
+    CONSTRAINT FK_LivroAssunto_Livro FOREIGN KEY (id_livro) REFERENCES LIVRO(id_item_acervo) ON DELETE CASCADE
 );
 GO
 
@@ -139,7 +139,7 @@ CREATE TABLE PERIODICO (
     titulo_original VARCHAR(200),
     CONSTRAINT PK_Periodico PRIMARY KEY (id_item_acervo),
     CONSTRAINT UQ_Periodico_Issn UNIQUE (issn),
-    CONSTRAINT FK_Periodico_ItemAcervo FOREIGN KEY (id_item_acervo) REFERENCES ITEM_ACERVO(id_item_acervo)
+    CONSTRAINT FK_Periodico_ItemAcervo FOREIGN KEY (id_item_acervo) REFERENCES ITEM_ACERVO(id_item_acervo) ON DELETE CASCADE
 );
 GO
 
@@ -152,7 +152,7 @@ CREATE TABLE EXEMPLAR (
     local_chamada VARCHAR(50) NOT NULL,
     id_periodico INT NOT NULL,
     CONSTRAINT PK_Exemplar PRIMARY KEY (id_exemplar),
-    CONSTRAINT FK_Exemplar_Periodico FOREIGN KEY (id_periodico) REFERENCES PERIODICO (id_item_acervo)
+    CONSTRAINT FK_Exemplar_Periodico FOREIGN KEY (id_periodico) REFERENCES PERIODICO (id_item_acervo) ON DELETE CASCADE
 );
 GO
 
@@ -165,14 +165,14 @@ CREATE TABLE ITEM_HISTORICO (
     material VARCHAR(100),
     local_armazenado VARCHAR(100) NOT NULL,
     CONSTRAINT PK_ItemHistorico PRIMARY KEY (id_item_acervo),
-    CONSTRAINT FK_ItemHistorico_ItemAcervo FOREIGN KEY (id_item_acervo) REFERENCES ITEM_ACERVO(id_item_acervo)
+    CONSTRAINT FK_ItemHistorico_ItemAcervo FOREIGN KEY (id_item_acervo) REFERENCES ITEM_ACERVO(id_item_acervo) ON DELETE CASCADE
 );
 GO
 
--- Trigger para inserir registros na tabela LOG_OPERACAO, sempre que houver opera��es em ITEM_ACERVO
-CREATE TRIGGER TRG_Registra_Operacao_ItemAcervo
+-- Trigger para inserir registros na tabela LOG_OPERACAO, sempre que houver INSERT ou UPDATE em ITEM_ACERVO
+CREATE OR ALTER TRIGGER TRG_Registra_Operacao_Insert_Update_ItemAcervo
 ON ITEM_ACERVO
-AFTER INSERT, UPDATE, DELETE
+AFTER INSERT, UPDATE
 AS
 BEGIN
     DECLARE @id_usuario_logado INT = 1; -- ID DO ADMIN
@@ -185,14 +185,6 @@ BEGIN
         FROM inserted i;
     END
 
-    -- Verifica se foi um DELETE
-    IF EXISTS (SELECT * FROM deleted) AND NOT EXISTS (SELECT * FROM inserted)
-    BEGIN
-        INSERT INTO LOG_OPERACAO (operacao, data_operacao, id_usuario, id_item_acervo)
-        SELECT 'DELETE - Item removido: ' + d.titulo, GETDATE(), @id_usuario_logado, d.id_item_acervo
-        FROM deleted d;
-    END
-
     -- Verifica se foi um UPDATE
     IF EXISTS (SELECT * FROM inserted) AND EXISTS (SELECT * FROM deleted)
     BEGIN
@@ -200,5 +192,22 @@ BEGIN
         SELECT 'UPDATE - Item "' + d.titulo + '" foi atualizado.', GETDATE(), @id_usuario_logado, i.id_item_acervo
         FROM inserted i INNER JOIN deleted d ON i.id_item_acervo = d.id_item_acervo;
     END
+END;
+GO
+
+-- Trigger INSTEAD OF DELETE para deletar registros de forma segura no banco
+CREATE OR ALTER TRIGGER TRG_Registra_Operacao_Delete_ItemAcervo
+ON ITEM_ACERVO
+INSTEAD OF DELETE
+AS
+BEGIN
+    DECLARE @id_usuario_logado INT = 1; -- ID DO ADMIN
+
+    INSERT INTO LOG_OPERACAO (operacao, data_operacao, id_usuario, id_item_acervo)
+    SELECT 'DELETE - Item removido: ' + d.titulo, GETDATE(), @id_usuario_logado, d.id_item_acervo
+    FROM deleted d;
+
+    DELETE FROM ITEM_ACERVO
+    WHERE id_item_acervo IN (SELECT id_item_acervo FROM deleted);
 END;
 GO
