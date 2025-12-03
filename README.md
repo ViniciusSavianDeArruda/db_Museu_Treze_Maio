@@ -9,7 +9,6 @@ Esse projeto foi realizado com o intuito de gerenciar o acervo bibliográfico e 
 - [Ferramentas Utilizadas](#ferramentas-utilizadas)
 - [Como Executar o Projeto](#como-executar-o-projeto)
 - [Estrutura do Projeto](#estrutura-do-projeto)
-- [Interface do Sistema (Protótipo)](#interface-do-sistema-protótipo)
 
 ---
 
