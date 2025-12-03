@@ -16,7 +16,7 @@ Esse projeto foi realizado com o intuito de gerenciar o acervo bibliográfico e 
 ## Funcionalidades
 O diagrama de Casos de Uso abaixo ilustra as principais interações que os usuários (Administrador e Público) podem ter com o sistema.
 
-*Casos De Uso:![Casos de Uso](./FotosDiagramas/Modelo%20caso%20de%20usos.png)*
+*Casos De Uso:![Casos de Uso](./Imagens-Diagramas/Modelo%20caso%20de%20usos.png)*
 
 ---
 
@@ -26,12 +26,12 @@ A modelagem foi dividida em duas etapas: conceitual e lógica, garantindo que os
 ### Modelo Conceitual (DER)
 Representa as entidades, seus atributos e os relacionamentos entre elas.
 
-*Modelo Conceitual: ![Modelo Conceitual](./FotosDiagramas/Modelo_Conceitual.png)*
+*Modelo Conceitual: ![Modelo Conceitual](./Imagens-Diagramas/Modelo_Conceitual.png)*
 
 ### Modelo Lógico
 Mapeia o modelo conceitual para uma estrutura de tabelas, com chaves primárias e estrangeiras definidas, assim como o tipo de dado de cada atributo.
 
-*Modelo Lógico: ![Modelo Lógico](./FotosDiagramas/Modelo_Logico.png)*
+*Modelo Lógico: ![Modelo Lógico](./Imagens-Diagramas/Modelo_Logico.png)*
 
 ---
 
