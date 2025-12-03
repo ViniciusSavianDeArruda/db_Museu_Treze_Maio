@@ -229,34 +229,29 @@ public class BibliotecaController {
     public void onBtnExcluirClick() {
         Livro livroSelecionado = tabelaLivros.getSelectionModel().getSelectedItem();
 
-        // 1. Validação: Verifica se tem um livro selecionado na tabela
         if (livroSelecionado == null) {
             mostrarAlerta(Alert.AlertType.WARNING, "Selecione um livro na tabela para excluir.");
             return;
         }
 
-        // 2. Confirmação de Segurança
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmar Exclusão");
         alert.setHeaderText(null);
         alert.setContentText("Tem certeza que deseja excluir o livro: " + livroSelecionado.getTitulo() + "?");
 
         if (alert.showAndWait().get() != ButtonType.OK) {
-            return; // Usuário cancelou
+            return;
         }
 
-        // 3. Tenta excluir no Banco de Dados
         try {
             new LivroDAO().excluir(livroSelecionado.getIdItemAcervo());
 
-            // Se chegou aqui, deu certo:
-            carregarDados(); // Atualiza a tabela
-            limparCampos();  // Limpa o formulário para não salvar por cima
+            carregarDados();
+            limparCampos(); 
             mostrarAlerta(Alert.AlertType.INFORMATION, "Livro excluído com sucesso!");
 
         } catch (Exception e) {
-            e.printStackTrace(); // Mantém o log técnico
-            // 4. Mostra o erro real na tela para você saber o que houve
+            e.printStackTrace();
             mostrarAlerta(Alert.AlertType.ERROR, "Não foi possível excluir.\nErro: " + e.getMessage());
         }
     }
