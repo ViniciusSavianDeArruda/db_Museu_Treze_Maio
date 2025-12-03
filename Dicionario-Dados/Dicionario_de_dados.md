@@ -62,7 +62,7 @@
 | `operacao` | VARCHAR(100) | NN | Descrição da ação realizada (ex: "Criação de Item", "Alteração de Título"). |
 | `data_operacao` | DATETIME | NN | Data e hora em que a operação foi realizada. |
 | `id_usuario` | INT | FK, NN | Chave estrangeira que aponta para o usuário que realizou a operação. |
-| `id_item_acervo` | INT | FK, NN | Chave estrangeira que aponta para o item do acervo que sofreu a operação. |
+| `id_item_acervo` | INT | FK, ON DELETE SET NULL | Chave estrangeira que aponta para o item do acervo que sofreu a operação. |
 
 ### **Tabela: `Publicacao`**
 **Descrição:** Armazena os diferentes registros de publicação de um item do acervo (edições, reimpressões).
@@ -73,7 +73,7 @@
 | `local_publicacao` | VARCHAR(255) | | Local de publicação (cidade, país). |
 | `editora` | VARCHAR(100) | | Nome da editora responsável por esta publicação. |
 | `ano` | INT | | Ano em que esta publicação foi feita. |
-| `id_item_acervo` | INT | FK, NN | Chave estrangeira que liga este registro de publicação ao item do acervo correspondente. |
+| `id_item_acervo` | INT | FK, NN, ON DELETE CASCADE| Chave estrangeira que liga este registro de publicação ao item do acervo correspondente. |
 
 <div style="page-break-after: always;"></div>
 
@@ -82,7 +82,7 @@
 
 | Atributo | Tipo de Dado | Restrições | Descrição |
 | :--- | :--- | :--- | :--- |
-| `id_item_acervo` | INT | PK, FK, NN | Chave primária e estrangeira que liga o livro ao registro geral em `ItemAcervo`. |
+| `id_item_acervo` | INT | PK, FK, NN, ON DELETE CASCADE | Chave primária e estrangeira que liga o livro ao registro geral em `ItemAcervo`. |
 | `local_chamada` | VARCHAR(50) | NN | Código de localização do livro na estante física (etiqueta). Ex: `B869.1-3 F981a`. |
 | `edicao` | VARCHAR(100) | | Descrição da edição (ex: "3ª Edição"). |
 | `desc_fisica` | VARCHAR(300) | | Descrição física do livro (ex: "342 p. ; 23 cm"). |
@@ -107,7 +107,7 @@
 
 | Atributo | Tipo de Dado | Restrições | Descrição |
 | :--- | :--- | :--- | :--- |
-| `id_livro` | INT | PK, FK, NN | Parte da chave primária composta. Aponta para o livro. |
+| `id_livro` | INT | PK, FK, NN, ON DELETE CASCADE | Parte da chave primária composta. Aponta para o livro. |
 | `id_autor` | INT | PK, FK, NN | Parte da chave primária composta. Aponta para o autor. |
 
 <div style="page-break-after: always;"></div>
@@ -125,7 +125,7 @@
 
 | Atributo | Tipo de Dado | Restrições | Descrição |
 | :--- | :--- | :--- | :--- |
-| `id_livro` | INT | PK, FK, NN | Parte da chave primária composta. Aponta para o livro. |
+| `id_livro` | INT | PK, FK, NN, ON DELETE CASCADE | Parte da chave primária composta. Aponta para o livro. |
 | `id_assunto` | INT | PK, FK, NN | Parte da chave primária composta. Aponta para o assunto. |
 
 <div style="page-break-after: always;"></div>
@@ -143,7 +143,7 @@
 
 | Atributo | Tipo de Dado | Restrições | Descrição |
 | :--- | :--- | :--- | :--- |
-| `id_item_acervo` | INT | PK, FK, NN | Chave primária e estrangeira que liga o periódico ao registro geral em `ItemAcervo`. |
+| `id_item_acervo` | INT | PK, FK, NN, ON DELETE CASCADE | Chave primária e estrangeira que liga o periódico ao registro geral em `ItemAcervo`. |
 | `issn` | VARCHAR(100) | UN | ISSN (International Standard Serial Number). Identificador único para o título do periódico. |
 | `periodicidade` | VARCHAR(100) | NN | Frequência de publicação (ex: "Trimestral"). |
 | `data_inicio_publicacao` | DATE | | Data em que o periódico começou a ser publicado. |
@@ -162,7 +162,7 @@
 | `numero_exemplar` | VARCHAR(100) | | Número da edição do exemplar. |
 | `ano_publicacao` | INT | | Ano em que este exemplar específico foi publicado. |
 | `local_chamada` | VARCHAR(50) | NN | Código de localização do exemplar físico na estante. |
-| `id_periodico` | INT | FK, NN | Chave estrangeira que liga o exemplar ao periódico que ele pertence. |
+| `id_periodico` | INT | FK, NN, ON DELETE CASCADE | Chave estrangeira que liga o exemplar ao periódico que ele pertence. |
 
 <div style="page-break-after: always;"></div>
 
@@ -171,7 +171,7 @@
 
 | Atributo | Tipo de Dado | Restrições | Descrição |
 | :--- | :--- | :--- | :--- |
-| `id_item_acervo` | INT | PK, FK, NN | Chave primária e estrangeira que liga o item histórico ao registro geral em `ItemAcervo`. |
+| `id_item_acervo` | INT | PK, FK, NN, ON DELETE CASCADE | Chave primária e estrangeira que liga o item histórico ao registro geral em `ItemAcervo`. |
 | `data_criacao` | DATE | | Data de criação do objeto. |
 | `descricao` | VARCHAR(MAX) | | Descrição detalhada do item. |
 | `dimensoes` | VARCHAR(50) | | Dimensões físicas do objeto (ex: "30cm x 50cm"). |
