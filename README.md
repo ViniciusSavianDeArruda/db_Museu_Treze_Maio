@@ -36,13 +36,14 @@ Mapeia o modelo conceitual para uma estrutura de tabelas, com chaves primárias 
 
 
 ## Interface do Sistema
+<img width="801" height="626" alt="image" src="https://github.com/user-attachments/assets/c3c71234-a7c5-4053-b227-f3193f3cbe5b" />
 
 ---
 
 ## Ferramentas Utilizadas
 *   **SGBD:** Microsoft SQL Server
 *   **IDE:** SQL Server Management Studio (SSMS)
-*   **Funcionalidades (Casos de Uso): Astah
+*   **Funcionalidades (Casos de Uso): Astah**
 *   **Modelagem:** brModelo
 *   **Interface do Sistema:**
 *   **Controle de Versão:** Git / GitHub (Opcional)
@@ -106,5 +107,3 @@ A estrutura de pacotes foi organizada da seguinte forma:
 2.  **Configuração:** O arquivo `pom.xml` gerencia todas as bibliotecas necessárias. Ao abrir o projeto na IDE, execute o comando `mvn clean install` para baixar as dependências.
 3.  **Execução:** Localize a classe principal `br.com.museu.museutrezemaio.App` e execute o método `main`.
 4.  **Login:** A tela inicial solicitará usuário e senha (previamente cadastrados no banco de dados).
-
-<img width="801" height="626" alt="image" src="https://github.com/user-attachments/assets/c3c71234-a7c5-4053-b227-f3193f3cbe5b" />
